@@ -24,21 +24,28 @@ from decimal import Decimal
 def login():
 	form = LoginForm()
 	if form.validate_on_submit():
-		info = LoginForm(employee_id = form.employee_id.data)
+		info = LoginCreds(employee_id = form.employee_id.data)
 		print(form.employee_id.data)
 		return redirect(url_for('order_entry'))
 	return render_template('employee_login.html', title='Login Page', form=form)
 @app.route('/order_history', methods=['GET', 'POST'])
 def order_history():
 	return render_template('/order_history.html', title='Order History', orders=[])
+	print(OrderInfo.query.all())
+	return render_template('/order_history.html', title='Order History', orders=OrderInfo.query.all())
 
 @app.route('/order_entry', methods=['GET', 'POST'])
 def order_entry():
 	form = OrderEntryForm()
 	if form.validate_on_submit():
-		info = OrderEntryForm(order_num=form.order_num.data, employee_id=form.employee_id.data,
-			item=form.item.data, price=form.price.data)
+		info = OrderInfo(order_num=form.order_num.data, employee_id=form.employee_id.data,
+			item=form.item.data, price=form.price.data, table = form.table.data)
 		print(form.order_num.data)
+		orders = OrderInfo.query.all()
+		if len(orders)==0:
+			info.id = 0
+		else:
+			info.id = orders[-1].id + 1
 		db.session.add(info)
 		db.session.commit()
 		flash('Order Added')
@@ -49,12 +56,14 @@ def order_entry():
 def payment():
 	form = PaymentForm()
 	if form.validate_on_submit():
-		info = PaymentForm(name=form.name.data, cardtype=form.cardtype.data, 
+		print('is valid')
+		info = PaymentInfo(name=form.name.data, cardtype=form.cardtype.data, 
 			cardnumber=form.cardnumber.data, card_exp=form.card_exp.data, card_cvv=form.card_cvv.data,
 			address=form.address.data, city=form.city.data, state=form.state.data, 
 			zip_code=form.zip_code.data)
-		db.session.add(info)
-		db.session.commit()
+		print(form.name.data)
+		#db.session.add(info)
+		#db.session.commit()
 		flash('Payment Saved')
 		return "<p>Thank You</p>"
-	return render_template('payment.html', title='Order Entry', form=form)
+	return render_template('payment.html', title='payment', form=form)

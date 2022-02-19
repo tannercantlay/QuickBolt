@@ -14,7 +14,7 @@ class PaymentForm(FlaskForm):
 	city = StringField('City', validators=[DataRequired()])
 	state = StringField('State', validators=[DataRequired()])
 	zip_code = StringField('Zip', validators=[DataRequired()])
-	submit = SubmitField('Place Payment', validators=[DataRequired()])
+	submit = SubmitField('Place Payment')
 
 	def validate_card_num(self, card_num):
 		if not len(str(card_num.data))==16:
@@ -35,4 +35,6 @@ class OrderEntryForm(FlaskForm):
 	employee_id = IntegerField('Employee Id', validators=[DataRequired()])
 	item = StringField('Menu Item', validators=[DataRequired()])
 	price = DecimalField('Price', validators=[DataRequired()])
-	submit = SubmitField('Add Order',validators=[DataRequired()])
+	table = IntegerField('Table Number', validators=[DataRequired()])
+	submit = SubmitField('Add Order')
+

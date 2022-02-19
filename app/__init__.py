@@ -21,5 +21,4 @@ app.config.update(dict(
 	))
 mail = Mail(app)
 
-
 from app import routes, forms
