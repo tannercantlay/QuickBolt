@@ -19,8 +19,9 @@ class PaymentInfo(db.Model):
 		self.card_exp = generate_password_hash(str(card_exp))
 
 class OrderInfo(db.Model):
-	orderNumber = db.Column(db.Integer, primary_key=True, unique=True, index=True)
+	id = db.Column(db.Integer, primary_key=True, unique=True, index=True)
+	order_num = db.Column(db.Integer, nullable=True)
 	employee_id = db.Column(db.Integer, nullable=True)
 	item = db.Column(db.String(128), nullable=True)
 	price = db.Column(db.Float, nullable=True)
-	
+

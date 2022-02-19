@@ -3,7 +3,7 @@ from flask import render_template, flash, redirect, request, url_for, session
 from app import app, mail, db
 from app.forms import *
 #from flask_login import current_user, login_user, logout_user, login_required
-#from app.models import User, Book, Promotion, Order, ListItem
+from app.models import OrderInfo, PaymentInfo
 from werkzeug.urls import url_parse
 from werkzeug.utils import secure_filename
 from flask_mail import Message
@@ -30,7 +30,7 @@ def login():
 	return render_template('employee_login.html', title='Login Page', form=form)
 @app.route('/order_history', methods=['GET', 'POST'])
 def order_history():
-	return render_template('/order_history.html', title='Order History', form=form)
+	return render_template('/order_history.html', title='Order History', orders=OrderInfo.query.all())
 
 @app.route('/order_entry', methods=['GET', 'POST'])
 def order_entry():
@@ -39,6 +39,9 @@ def order_entry():
 		info = OrderEntryForm(order_num=form.order_num.data, employee_id=form.employee_id.data,
 			item=form.item.data, price=form.price.data)
 		print(form.order_num.data)
+		db.session.add(info)
+		db.session.commit()
+		flash('Order Added')
 	return render_template('/order_entry.html', title='Order Entry', form=form)
 
 #add payment id to handle multiple users?
