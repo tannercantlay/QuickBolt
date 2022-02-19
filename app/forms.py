@@ -31,7 +31,6 @@ class LoginForm(FlaskForm):
             raise ValidationError('Credit card number should be 8 digits long')
 
 class OrderEntryForm(FlaskForm):
-	order_num = IntegerField('Order Number', validators=[DataRequired()])
 	employee_id = IntegerField('Employee Id', validators=[DataRequired()])
 	item = StringField('Menu Item', validators=[DataRequired()])
 	price = DecimalField('Price', validators=[DataRequired()])

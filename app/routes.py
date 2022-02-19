@@ -12,6 +12,7 @@ import random
 import string
 from datetime import date, datetime
 from decimal import Decimal
+from sqlalchemy import func
 
 # msg = Message("Sup Buddy",
 #  		sender=app.config.get("MAIL_USERNAME"),
@@ -37,22 +38,35 @@ def order_history():
 def order_entry():
 	form = OrderEntryForm()
 	if form.validate_on_submit():
-		info = OrderInfo(order_num=form.order_num.data, employee_id=form.employee_id.data,
-			item=form.item.data, price=form.price.data, table = form.table.data)
-		print(form.order_num.data)
+		print("valid form")
+		info = OrderInfo(table=form.table.data,employee_id=form.employee_id.data,
+			item=form.item.data, price=form.price.data)
 		orders = OrderInfo.query.all()
 		if len(orders)==0:
 			info.id = 0
+			info.order_num = 0
 		else:
 			info.id = orders[-1].id + 1
+			tableNum = OrderInfo.query.filter_by(table = form.table.data).first()
+			if tableNum is None:
+				maxOrderNum = db.session.query(func.max(OrderInfo.order_num)).scalar()
+				print(maxOrderNum)
+				info.order_num = maxOrderNum + 1
+			else:
+				info.order_num = tableNum.order_num
 		db.session.add(info)
 		db.session.commit()
 		flash('Order Added')
 	return render_template('/order_entry.html', title='Order Entry', form=form)
 
 #add payment id to handle multiple users?
-@app.route('/payment', methods=['GET', 'POST'])
-def payment():
+@app.route('/payment:<int:order_num>', methods=['GET', 'POST'])
+def payment(order_num):
+	print(order_num)
+	orders = OrderInfo.query.filter_by(order_num=order_num)
+	price = 0
+	for order in orders:
+		price += order.price
 	form = PaymentForm()
 	if form.validate_on_submit():
 		print('is valid')
@@ -65,4 +79,4 @@ def payment():
 		#db.session.commit()
 		flash('Payment Saved')
 		return "<p>Thank You</p>"
-	return render_template('payment.html', title='payment', form=form)
+	return render_template('payment.html', title='payment', form=form, orders=orders, price=price)

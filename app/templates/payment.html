@@ -9,6 +9,25 @@
       <h5 class="w3-padding-32">RECEIPT INFORMATION LOCATION</h5>
 
       <p class="w3-text-grey">Small Text information about their transaction</p>
+
+      <table class="table table-striped">
+        <thead>
+          <tr>
+            <th>Menu Item</th>
+            <th>Item Price</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for order in orders %}
+          <tr>
+            <td>{{order.item}}</td>
+            <td>{{order.price}}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+      <h5 class="w3-padding-32">{{price}}</h5>
+      <h5 class="w3-padding-32">{{orders[0].order_num}}</h5>
     </div>
 
     <!-- PAYMENT INFORMATION -->
@@ -43,16 +62,16 @@
       {% endfor %}
     </div>
 
-        <div class="form-group col-md-8">
-        <label for="cardNumber">Card Number*</label>
-        {{form.cardnumber(size=24)}} <!-- can change size to 16 or keep all boxes same size-->
-        {% for error in form.cardnumber.errors %}
-        <span style="color: red;">[{{ error }}]</span>
-        {% endfor %}
-        <!--  <input class="form-control" id="inputPassword4" placeholder="Card Number"> -->
-      </div>
-      
-      <div class="form-row">
+    <div class="form-group col-md-8">
+      <label for="cardNumber">Card Number*</label>
+      {{form.cardnumber(size=24)}} <!-- can change size to 16 or keep all boxes same size-->
+      {% for error in form.cardnumber.errors %}
+      <span style="color: red;">[{{ error }}]</span>
+      {% endfor %}
+      <!--  <input class="form-control" id="inputPassword4" placeholder="Card Number"> -->
+    </div>
+
+    <div class="form-row">
       <div class="form-group col-md-8">
         <label for="expirationDate">Expiration Date (XX/XXXX)*</label>
         {{form.card_exp(size=16)}}
@@ -62,43 +81,43 @@
         <!--  <input class="form-control" id="inputPassword4" placeholder="Expiration Date"> -->
       </div>
     </div>
-      
-        <div class="form-group col-md-8">
-        <label for="inputCVV">CVV*</label> <br>
-        {{form.card_cvv(size=16)}}
-        {% for error in form.card_cvv.errors %}
-        <span style="color: red;">[{{ error }}]</span>
-        {% endfor %}
-        <!--       <input type="password" class="form-control" id="inputEmail4" placeholder="CVV"> -->
-      </div>
+
+    <div class="form-group col-md-8">
+      <label for="inputCVV">CVV*</label> <br>
+      {{form.card_cvv(size=16)}}
+      {% for error in form.card_cvv.errors %}
+      <span style="color: red;">[{{ error }}]</span>
+      {% endfor %}
+      <!--       <input type="password" class="form-control" id="inputEmail4" placeholder="CVV"> -->
+    </div>
     
 
-      <div class="form-group col-md-8">
-        <label for="inputAddress">Address*</label> <br>
-        {{form.address(size=16)}}
-        {% for error in form.address.errors %}
+    <div class="form-group col-md-8">
+      <label for="inputAddress">Address*</label> <br>
+      {{form.address(size=16)}}
+      {% for error in form.address.errors %}
+      <span style="color: red;">[{{ error }}]</span>
+      {% endfor %}
+      <!-- <input type="text" class="form-control" id="inputAddress" placeholder="Address"> -->
+    </div>
+
+    <!-- CITY STATE ZIP ROW -->
+    <div class="form-row">
+      <div class="form-group col-md-3">
+        <label for="inputCity">City*</label>
+        {{form.city(size=8)}}
+        {% for error in form.city.errors %}
         <span style="color: red;">[{{ error }}]</span>
         {% endfor %}
-        <!-- <input type="text" class="form-control" id="inputAddress" placeholder="Address"> -->
+        <!-- <input type="text" class="form-control" id="inputCity"placeholder="City"> -->
       </div>
-      
-      <!-- CITY STATE ZIP ROW -->
-      <div class="form-row">
-        <div class="form-group col-md-3">
-          <label for="inputCity">City*</label>
-          {{form.city(size=8)}}
-          {% for error in form.city.errors %}
-          <span style="color: red;">[{{ error }}]</span>
-          {% endfor %}
-          <!-- <input type="text" class="form-control" id="inputCity"placeholder="City"> -->
-        </div>
 
-        <div class="form-group col-md-3">
-          <label for="inputState">State*</label>
-          {{form.state(size=8)}} <!-- can change to select option if we have time -->
-          {% for error in form.state.errors %}
-          <span style="color: red;">[{{ error }}]</span>
-          {% endfor %}
+      <div class="form-group col-md-3">
+        <label for="inputState">State*</label>
+        {{form.state(size=8)}} <!-- can change to select option if we have time -->
+        {% for error in form.state.errors %}
+        <span style="color: red;">[{{ error }}]</span>
+        {% endfor %}
       <!-- <select id="inputState" class="form-control">
         <option selected>State</option>
         <option>Georgia</option>
@@ -115,11 +134,11 @@
     </div>
   </div>
 </div>
-    <div>
-      <button type="submit" class="btn btn-primary">Checkout</button>
-    </form>    
-  </div>
-  </form>
+<div>
+  <button type="submit" class="btn btn-primary">Checkout</button>
+</form>    
+</div>
+</form>
 </div>
 </div>
 </div>
@@ -129,19 +148,19 @@
 
 
 
-  <!-- Footer -->
+<!-- Footer -->
 <footer class="w3-container w3-padding-64 w3-center w3-opacity">  
   <div class="w3-xlarge w3-padding-32">
     <a href="https://www.linkedin.com/in/spencer-skaggs-864698205/" target="_blank"><i class="fa fa-facebook-official w3-hover-opacity"></i>
-    <a href="https://www.linkedin.com/in/spencer-skaggs-864698205/" target="_blank"><i class="fa fa-instagram w3-hover-opacity"></i>
-    <a href="https://www.linkedin.com/in/spencer-skaggs-864698205/" target="_blank"><i class="fa fa-twitter w3-hover-opacity"></i>
-    <a href="https://www.linkedin.com/in/spencer-skaggs-864698205/" target="_blank"><i class="fa fa-linkedin w3-hover-opacity"></i>
-    
-  </div>
-  <p>Powered by <a href="https://ugahacks.com/" target="_blank">UGA Hackathon</a></p>
-</footer>
+      <a href="https://www.linkedin.com/in/spencer-skaggs-864698205/" target="_blank"><i class="fa fa-instagram w3-hover-opacity"></i>
+        <a href="https://www.linkedin.com/in/spencer-skaggs-864698205/" target="_blank"><i class="fa fa-twitter w3-hover-opacity"></i>
+          <a href="https://www.linkedin.com/in/spencer-skaggs-864698205/" target="_blank"><i class="fa fa-linkedin w3-hover-opacity"></i>
 
-<script>
+          </div>
+          <p>Powered by <a href="https://ugahacks.com/" target="_blank">UGA Hackathon</a></p>
+        </footer>
+
+        <script>
 // Used to toggle the menu on small screens when clicking on the menu button
 function myFunction() {
   var x = document.getElementById("navDemo");
