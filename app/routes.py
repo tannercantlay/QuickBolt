@@ -30,7 +30,6 @@ def login():
 	return render_template('employee_login.html', title='Login Page', form=form)
 @app.route('/order_history', methods=['GET', 'POST'])
 def order_history():
-	return render_template('/order_history.html', title='Order History', orders=[])
 	print(OrderInfo.query.all())
 	return render_template('/order_history.html', title='Order History', orders=OrderInfo.query.all())
 
