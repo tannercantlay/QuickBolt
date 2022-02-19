@@ -7,7 +7,9 @@ from flask_mail import Mail
 from werkzeug.utils import secure_filename
 
 app = Flask(__name__)
-
+app.config.from_object(Config)
+db = SQLAlchemy(app)
+migrate = Migrate(app, db)
 app.config.update(dict(
     MAIL_SERVER = 'smtp.gmail.com',
     MAIL_PORT = 465,

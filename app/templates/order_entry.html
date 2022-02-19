@@ -1,0 +1,46 @@
+{% extends "navbar.html" %}
+
+{% block content %}
+<body>
+	<form action="" method="post" novalidate> 
+		{{form.csrf_token }}
+		{{form.order_num}}<br>
+		{% for error in form.order_num.errors %}
+		<span style="color: red;">[{{ error }}]</span>
+		{% endfor %}
+		<label class="form-label" for="typeEmailX-2">Order Number</label><br>
+
+		{{form.employee_id}}<br>
+		{% for error in form.employee_id.errors %}
+		<span style="color: red;">[{{ error }}]</span>
+		{% endfor %}
+		<label class="form-label" for="typeEmailX-2">Employee Number</label><br>
+
+		{{form.item}}<br>
+		{% for error in form.item.errors %}
+		<span style="color: red;">[{{ error }}]</span>
+		{% endfor %}
+		<label class="form-label" for="typeEmailX-2">Menu Item</label><br>
+
+		{{form.price}}<br>
+		{% for error in form.price.errors %}
+		<span style="color: red;">[{{ error }}]</span>
+		{% endfor %}
+		<label class="form-label" for="typeEmailX-2">Item Price</label><br>
+
+		<button type="submit" class="btn btn-primary">Add Order</button>
+	</form>
+	<script>
+// Used to toggle the menu on small screens when clicking on the menu button
+function myFunction() {
+	var x = document.getElementById("navDemo");
+	if (x.className.indexOf("w3-show") == -1) {
+		x.className += " w3-show";
+	} else { 
+		x.className = x.className.replace(" w3-show", "");
+	}
+}
+</script>
+
+</body>
+{% endblock %}
