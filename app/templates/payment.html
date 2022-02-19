@@ -14,8 +14,10 @@
     <!-- PAYMENT INFORMATION -->
     <div class="w3-third w3-center">
       <h1>PAYMENT INFORMATION</h1>
-      <h6> (* indicates required fields)</h6>
-      <form action="" method="post" novalidate> 
+
+      <h5 class="w3-padding-32">PAYMENT INPUT LOCATION</h5>
+      <form action="" method="post"  enctype="multipart/form-data" validate> 
+
         {{form.csrf_token }}
         <div class="form-row">
           <div class="form-group col-md-8">

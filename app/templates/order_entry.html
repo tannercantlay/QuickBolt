@@ -5,7 +5,7 @@
 <br>
 <div class="w3-container w3-center">
 <body>
-	<form action="" method="post" novalidate> 
+	<form action="" method="post" enctype="multipart/form-data" validate> 
 		{{form.csrf_token }}
 		{{form.order_num}}<br>
 		{% for error in form.order_num.errors %}
