@@ -1,0 +1,118 @@
+{% extends "base.html" %}
+
+{% block content %}
+<!-- RECEIPT INFORMATION -->
+<div class="w3-row-padding w3-padding-64 w3-container">
+  <div class="w3-content">
+    <div class="w3-twothird">
+      <h1>Receipt</h1>
+      <h5 class="w3-padding-32">RECEIPT INFORMATION LOCATION</h5>
+
+      <p class="w3-text-grey">Small Text information about their transaction</p>
+      </div>
+
+<!-- PAYMENT INFORMATION -->
+    <div class="w3-third w3-center">
+      <h1>PAYMENT INFORMATION</h1>
+      <h5 class="w3-padding-32">PAYMENT INPUT LOCATION</h5>
+      <img src="" width="200" height="90">
+      <form>
+  <div class="form-row">
+    <div class="form-group col-md-10">
+       <p>
+             <label for="inputNameOnCard"></label>
+             {{ form.name(size=32) }} *<br>
+             {% for error in form.name.errors %}
+             <span style="color: red;">[{{ error }}]</span>
+             {% endfor %}
+         </p>
+<!--
+      <label for="inputNameOnCard"></label>
+    <input type="name" class="form-control" id="inputEmail4" placeholder="Name on Card">-->
+    </div>
+    <div class="form-group col-md-10">
+      <label for="inputState"></label>
+      <select id="inputState" class="form-control">
+        <option selected>Card Type</option>
+        <option>Credit</option>
+        <option>Debit</option>
+      </select>
+    </div>
+  <div class="form-row">
+    <div class="form-group col-md-10">
+      <label for="cardNumber"></label>
+      <input class="form-control" id="inputPassword4" placeholder="Card Number">
+    </div>
+    <div class="form-group col-md-5">
+      <label for="expirationDate"></label>
+      <input class="form-control" id="inputPassword4" placeholder="Expiration Date">
+    </div>
+    <div class="form-group col-md-5">
+      <label for="inputCVV"></label>
+      <input type="password" class="form-control" id="inputEmail4" placeholder="CVV">
+    </div>
+      <div class="form-group col-md-10">
+    <label for="inputAddress"></label>
+    <input type="text" class="form-control" id="inputAddress" placeholder="Address">
+  </div>
+   <div class="form-row">
+    <div class="form-group col-md-4">
+      <label for="inputCity"></label>
+      <input type="text" class="form-control" id="inputCity"placeholder="City">
+    </div>
+    <div class="form-group col-md-3">
+      <label for="inputState"></label>
+      <select id="inputState" class="form-control">
+        <option selected>State</option>
+        <option>Georgia</option>
+      </select>
+    </div>
+    <div class="form-group col-md-4">
+      <label for="inputZip"></label>
+      <input type="text" class="form-control" id="inputZip" placeholder="Zip">
+    </div>
+  <div>
+  <button type="submit" class="btn btn-primary">Checkout</button>
+</form>    
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+</div>
+
+<div class="w3-container w3-black w3-center w3-opacity w3-padding-64">
+    <h1 class="w3-margin w3-xlarge">Quote of the day: live life</h1>
+</div>
+
+<!-- Footer -->
+<footer class="w3-container w3-padding-64 w3-center w3-opacity">  
+  <div class="w3-xlarge w3-padding-32">
+    <i class="fa fa-facebook-official w3-hover-opacity"></i>
+    <i class="fa fa-instagram w3-hover-opacity"></i>
+    <i class="fa fa-snapchat w3-hover-opacity"></i>
+    <i class="fa fa-pinterest-p w3-hover-opacity"></i>
+    <i class="fa fa-twitter w3-hover-opacity"></i>
+    <i class="fa fa-linkedin w3-hover-opacity"></i>
+    <img src="https://www.teahub.io/photos/full/97-978029_csgo-memes-cs-go-memes-2018..jpg">
+ </div>
+ <p>Powered by <a href="https://i1.sndcdn.com/artworks-5wlKUV5TXCGuALCy-zLVWgg-t500x500.jpg" target="_blank">csgo</a></p>
+</footer>
+
+<script>
+// Used to toggle the menu on small screens when clicking on the menu button
+function myFunction() {
+  var x = document.getElementById("navDemo");
+  if (x.className.indexOf("w3-show") == -1) {
+    x.className += " w3-show";
+  } else { 
+    x.className = x.className.replace(" w3-show", "");
+  }
+}
+</script>
+
+</body>
+</html>
+
+{% endblock %}

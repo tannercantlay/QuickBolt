@@ -1,5 +1,5 @@
 from flask import Flask, session
-#from config import Config
+from config import Config
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from flask_login import LoginManager
@@ -15,6 +15,7 @@ app.config.update(dict(
     MAIL_USE_SSL = True,
     MAIL_USERNAME = 'quickdashugahacks@gmail.com',
     MAIL_PASSWORD = 'inferno4lyfe',
+    SECRET_KEY = 'any secret string'
 	))
 mail = Mail(app)
 

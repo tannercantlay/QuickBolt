@@ -47,5 +47,4 @@ def payment():
   #       db.session.commit()
   #       flash('Payment Saved')
   #       return redirect('thankyoupage')
-	return "<p>payment</p>"
-	#render_template(templatefile, title='Order Entry')
+	return render_template('payment.html', title='Order Entry', form=form)
