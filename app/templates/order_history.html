@@ -37,11 +37,7 @@
           <td>{{order.order_num}}</td>
           <td>{{order.employee_id}}</td>
           <td>{{order.item}}</td>
-        {% endfor %}
-        {% for entry in formated_price %}
-          <td>{{entry}}</td>
-        {% endfor %}
-        {% for order in orders %}
+          <td>{{order.price}}</td>
           <td>{{order.table}}</td>
           <td>{{order.billSent}}</td>
         </tr>
