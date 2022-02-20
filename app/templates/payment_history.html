@@ -1,46 +1,27 @@
       {% extends "navbar.html" %}
 
       {% block content %}
-  
-
-    <br>
-        <div class="w3-container w3-center"> 
-        <div class="form-group">
-          <form action="" method="post"  enctype="multipart/form-data" validate> 
-          {{form.csrf_token }}
-          <label for="tableCharge"> Table to Charge</label>
-          {{form.table}}
-          {% for error in form.table.errors %}
-          <span style="color: red;">[{{ error }}]</span>
-          {% endfor %}
-          <label for="tableCharge"> Customer Email</label>
-          {{form.email}}
-          {% for error in form.email.errors %}
-          <span style="color: red;">[{{ error }}]</span>
-          {% endfor %}
-          <button type="submit" class="btn btn-primary">Send Bill</button>         
-          </form>
-    <br>
 
       <body>
       	<table class="table table-striped">
           <thead>
             <tr>
               <th>Order Number</th>
-              <th>Employee Id</th>
-              <th>Menu Item</th>
-              <th>Price</th>
-              <th>Table Number</th>
+              <th>Order Price</th>
+              <th>Customer Name</th>
+              <th>Card Type</th>
+              <th>Zip Code</th>
+              <th>Server Id</th>
             </tr>
           </thead>
           <tbody>
-            {% for order in orders %}
+            {% for payment in payments %}
               <tr>
-                <td>{{order.order_num}}</td>
-                <td>{{order.employee_id}}</td>
-                <td>{{order.item}}</td>
-                <td>{{order.price}}</td>
-                <td>{{order.table}}</td>
+                <td>{{payment.orderNumber}}</td>
+                <td>{{payment.orderPrice}}</td>
+                <td>{{payment.name}}</td>
+                <td>{{payment.zip_code}}</td>
+                <td>{{payment.employee_id}}</td>
                 </tr>
               {% endfor %}
             </tbody>

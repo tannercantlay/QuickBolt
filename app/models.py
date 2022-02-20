@@ -12,6 +12,7 @@ class PaymentInfo(db.Model):
 	state = db.Column(db.String(128), nullable=True) 
 	zip_code = db.Column(db.String(128), nullable=True)
 	employee_id = db.Column(db.Integer, nullable= True)
+	orderPrice = db.Column(db.Float, nullable=True)
 
 	def set_card_num(self, card_num):
 		self.card_num = generate_password_hash(str(card_num))

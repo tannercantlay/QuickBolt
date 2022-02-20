@@ -14,6 +14,7 @@ class PaymentForm(FlaskForm):
 	city = StringField('City', validators=[DataRequired()])
 	state = StringField('State', validators=[DataRequired()])
 	zip_code = StringField('Zip', validators=[DataRequired()])
+	tip = DecimalField('Tip')
 	submit = SubmitField('Place Payment')
 
 	def validate_card_num(self, card_num):
@@ -36,4 +37,9 @@ class OrderEntryForm(FlaskForm):
 	price = DecimalField('Price', validators=[DataRequired()])
 	table = IntegerField('Table Number', validators=[DataRequired()])
 	submit = SubmitField('Add Order')
+
+class TableToCharge(FlaskForm):
+	table = IntegerField('Table Number', validators=[DataRequired()])
+	email = StringField('Email', validators=[DataRequired(),Email()])
+	submit = SubmitField('Send Bill')
 

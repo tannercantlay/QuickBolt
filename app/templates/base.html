@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
-<title>QuickDash</title>
+<title>{{title}}</title>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
@@ -37,4 +37,14 @@ body,h1,h2,h3,h4,h5,h6 {font-family: "Lato", sans-serif}
   <p class="w3-xlarge">DEMO PAYMENT FRONTEND</p>
   <button class="w3-button w3-black w3-padding-large w3-large w3-margin-top">UNUSEDButton</button>
 </header>
+
+{% with messages = get_flashed_messages() %}
+  {% if messages %}
+  <ul>
+    {% for message in messages %}
+    <li>{{ message }}</li>
+    {% endfor %}
+  </ul>
+  {% endif %}
+  {% endwith %}
 {% block content %}{% endblock %}
