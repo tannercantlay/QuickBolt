@@ -14,7 +14,7 @@ class PaymentForm(FlaskForm):
 	city = StringField('City', validators=[DataRequired()])
 	state = StringField('State', validators=[DataRequired()])
 	zip_code = StringField('Zip', validators=[DataRequired()])
-	tip = DecimalField('Tip')
+	tip = DecimalField('Tip', validators=[Optional()])
 	submit = SubmitField('Place Payment')
 
 	def validate_card_num(self, card_num):

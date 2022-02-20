@@ -86,6 +86,7 @@ def payment(order_num):
 		price = 0
 		for order in orders:
 			price += order.price
+
 		form = PaymentForm()
 		if form.validate_on_submit():
 			print('is valid')
@@ -93,8 +94,7 @@ def payment(order_num):
 				card_num=form.cardnumber.data, card_exp=form.card_exp.data,
 				address=form.address.data, city=form.city.data, state=form.state.data, 
 				zip_code=form.zip_code.data)
-			print(form.name.data)
-			info.orderPrice = price
+			info.orderPrice = price + form.tip.data
 			body = "Thank you for your business {}, here is your reciept:\r\n Order Number: {} \r\n".format(form.name.data, order_num)
 			count = 1
 			for order in orders:
@@ -102,7 +102,7 @@ def payment(order_num):
 				body += "{}. item: {} price: {}\r\n".format(count, order.item, order.price)
 				count = count + 1 
 
-			body += "\r\nTotal: {}".format(price)
+			body += "\r\nTotal: {}".format(info.orderPrice)
 
 			msg = Message("Here is your reciept",
 				sender=app.config.get("MAIL_USERNAME"),
@@ -114,7 +114,7 @@ def payment(order_num):
 			OrderInfo.query.filter_by(order_num=order_num).delete()
 			db.session.commit()
 			return redirect(url_for('payment_confirmation'))
-	return render_template('payment.html', title='payment', form=form, orders=orders, price=price)
+	return render_template('payment.html', title='payment', form=form, orders=orders, price=info.Orderprice)
 
 @app.route("/payment_confirmation", methods=['GET'])
 def payment_confirmation():
