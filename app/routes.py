@@ -52,7 +52,7 @@ def order_history():
 				flash("Bill has already been sent")
 				return redirect(url_for('order_history'))
 			current_user.currentCustomerEmail = form.email.data
-			body = "Please click this link to pay your bill: 127.0.0.1:5000/payment:{}".format(int(order_num.order_num))
+			body = "Please click this link to pay your bill: 172.21.73.68:5000/payment:{}".format(int(order_num.order_num))
 			msg = Message("Here is your bill",
 				sender=app.config.get("MAIL_USERNAME"),
 	 			recipients=[form.email.data],
@@ -136,11 +136,11 @@ def payment(order_num):
 			for order in orders:
 				order.billSent = "Closed"
 
-				body += "{}. item: {} price: {}\r\n".format(count, order.item, order.price)
+				body += "{}. item: {} price: ${:,.2f}\r\n".format(count, order.item, order.price)
 				count = count + 1 
 
-			body += "\r\n Tip: {}".format(form.tip.data)
-			body += "\r\nTotal: {}".format(info.orderPrice)
+			body += "\r\n Tip: ${:,.2f}".format(form.tip.data)
+			body += "\r\nTotal: ${:,.2f}".format(info.orderPrice)
 
 			msg = Message("Here is your reciept",
 				sender=app.config.get("MAIL_USERNAME"),
