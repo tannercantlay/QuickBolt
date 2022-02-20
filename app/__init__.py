@@ -18,8 +18,8 @@ app.config.update(dict(
     MAIL_USE_SSL = True,
     MAIL_USERNAME = 'quickdashugahacks@gmail.com',
     MAIL_PASSWORD = 'inferno4lyfe',
-    SECRET_KEY = 'any secret string'
-	))
+    SECRET_KEY = 'any secret string',
+    ENVIRONMENT = 'development'
+    ))
 mail = Mail(app)
-
 from app import routes, models

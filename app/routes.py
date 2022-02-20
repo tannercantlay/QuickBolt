@@ -12,13 +12,7 @@ import random
 import string
 from datetime import date, datetime
 from decimal import Decimal
-from sqlalchemy import func
-
-# msg = Message("Sup Buddy",
-#  		sender=app.config.get("MAIL_USERNAME"),
-#        recipients=["tannercantlay@gmail.com"],
-#        body = "Bitch")
-# mail.send(msg)
+from sqlalchemy import func, asc, desc
 
 @app.route('/',methods=['GET', 'POST'])
 @app.route('/login',methods=['GET', 'POST'])
@@ -53,7 +47,8 @@ def order_history():
 		if order_num is None:
 			flash("Invalid Table")
 		else:
-			if order_num.billSent == "Sent" or order_num.billSent =="Closed":
+			openOrder = order.filter_by(billSent="Open")
+			if openOrder is None:
 				flash("Bill has already been sent")
 				return redirect(url_for('order_history'))
 			current_user.currentCustomerEmail = form.email.data
@@ -66,40 +61,40 @@ def order_history():
 			flash("Email has been sent")
 			orders = OrderInfo.query.filter_by(table = form.table.data).all()
 			for order in orders:
-				order.billSent = "Sent";
+				if order.billSent == "Open":
+					order.billSent = "Sent";
 			db.session.commit()
 			return redirect(url_for('order_history'))
-	return render_template('/order_history.html', title='Order History', form=form, orders=OrderInfo.query.all(),employee_id=current_user.id)
+	return render_template('/order_history.html', title='Order History', form=form, orders=OrderInfo.query.filter_by(employee_id=current_user.id),employee_id=current_user.id)
 
 @app.route('/order_entry', methods=['GET', 'POST'])
 @login_required
 def order_entry():
 	form = OrderEntryForm()
 	if form.validate_on_submit():
-		print("valid form")
+		
 		info = OrderInfo(table=form.table.data,item=form.item.data, price=form.price.data)
 		orders = OrderInfo.query.all()
-		print(type(orders))
+		
 		if len(orders)==0:
 			info.id = 0
 			info.order_num = 0
 	
 		else:
 			info.id = orders[-1].id + 1
-			tableNum = OrderInfo.query.filter_by(table = form.table.data)[-1]
+			# tableQuery = OrderInfo.query.filter_by(table = form.table.data).order_by(desc(OrderInfo.order_num))
 			maxOrderNum = db.session.query(func.max(OrderInfo.order_num)).scalar()
-			if tableNum is None:
-				print(maxOrderNum)
-				info.order_num = maxOrderNum + 1
-			else:
-				maxOrderNumForTable = OrderInfo.query.filter_by(table=form.table.data)
-				maxOrderNumForTable = OrderInfo.query.filter_by(table=form.table.data).order_by(OrderInfo.order_num)[-1]
-				print(maxOrderNumForTable)
+			# tableNum = tableQuery.first()
+			maxOrderNumForTable = OrderInfo.query.filter_by(table=form.table.data).order_by(desc(OrderInfo.order_num)).first()
+			if maxOrderNumForTable is not None:
+
 				if maxOrderNumForTable.billSent == "Open":
-					info.order_num = tableNum.order_num
+					info.order_num = maxOrderNumForTable.order_num
 				else:
-					info.order_num = maxOrderNumForTable.order_num + 1
-					
+					info.order_num = maxOrderNum + 1
+			else:
+				info.order_num = maxOrderNum + 1
+
 		info.billSent = "Open"
 		info.employee_id = current_user.id
 		db.session.add(info)
@@ -131,9 +126,12 @@ def payment(order_num):
 				card_num=form.cardnumber.data, card_exp=form.card_exp.data,
 				address=form.address.data, city=form.city.data, state=form.state.data, 
 				zip_code=form.zip_code.data)
+			if form.tip.data == None:
+				form.tip.data = 0
 			info.orderPrice = price + form.tip.data
 			info.employee_id = orders[0].employee_id
 			email = User.query.filter_by(id = info.employee_id).first().currentCustomerEmail
+			print(email)
 			
 			body = "Thank you for your business {}, here is your reciept:\r\n Order Number: {} \r\n".format(form.name.data, order_num)
 			count = 1
@@ -143,6 +141,7 @@ def payment(order_num):
 				body += "{}. item: {} price: {}\r\n".format(count, order.item, order.price)
 				count = count + 1 
 
+			body += "\r\n Tip: {}".format(form.tip.data)
 			body += "\r\nTotal: {}".format(info.orderPrice)
 
 			msg = Message("Here is your reciept",
