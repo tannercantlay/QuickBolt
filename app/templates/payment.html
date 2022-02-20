@@ -22,11 +22,8 @@
         <tbody>
           {% for order in orders %}
           <tr>
-            <!-- <%currency = ${:,.2f}".format({{order.price}}%> -->
             <td>{{order.item}}</td>
-          {% endfor %}
-          {% for entry in formated_price %}
-            <td>{{entry}}</td>
+            <td class="currency-usd">{{order.price}}</td>
           </tr>
           {% endfor %}
           
@@ -148,4 +145,17 @@
 </div>
 </form>
 </div>
+
+  <script src="https://code.jquery.com/jquery-3.5.0.js"></script>
+  <script>
+      $('.currency-usd').each(function() {
+        var monetary_value = $(this).text();
+        console.log(monetary_value)
+        var i = new Intl.NumberFormat('en-US', {
+          style: 'currency',
+          currency: 'USD'
+        }).format(monetary_value);
+         $(this).text(i);
+      });
+      </script>
 {% endblock %}

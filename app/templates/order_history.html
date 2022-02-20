@@ -37,11 +37,7 @@
           <td>{{order.order_num}}</td>
           <td>{{order.employee_id}}</td>
           <td>{{order.item}}</td>
-        {% endfor %}
-        {% for entry in formated_price %}
-          <td>{{entry}}</td>
-        {% endfor %}
-        {% for order in orders %}
+          <td class="currency-usd">{{order.price}}</td>
           <td>{{order.table}}</td>
           <td>{{order.billSent}}</td>
         </tr>
@@ -49,4 +45,16 @@
       </tbody>
     </table>
     <a class="btn btn-warning" href="/clear_order_history" role="button">Clear Order History</a>
-{% endblock %}
+      <script src="https://code.jquery.com/jquery-3.5.0.js"></script>
+      <script>
+      $('.currency-usd').each(function() {
+        var monetary_value = $(this).text();
+        console.log(monetary_value)
+        var i = new Intl.NumberFormat('en-US', {
+          style: 'currency',
+          currency: 'USD'
+        }).format(monetary_value);
+         $(this).text(i);
+      });
+      </script>
+      {% endblock %}

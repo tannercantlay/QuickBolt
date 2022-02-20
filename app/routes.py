@@ -40,10 +40,6 @@ def login():
 @app.route('/order_history', methods=['GET', 'POST'])
 @login_required
 def order_history():
-	orders =OrderInfo.query.filter_by(employee_id=current_user.id)
-	formated_price = []
-	for order in orders:
-		formated_price.append("${:,.2f}".format(order.price))
 	form = TableToCharge()
 	if form.validate_on_submit():
 		order = OrderInfo.query.filter_by(table = form.table.data)
@@ -69,7 +65,7 @@ def order_history():
 					order.billSent = "Sent";
 			db.session.commit()
 			return redirect(url_for('order_history'))
-	return render_template('/order_history.html', title='Order History', form=form, orders=orders,formated_price=formated_price,employee_id=current_user.id)
+	return render_template('/order_history.html', title='Order History', form=form, orders=OrderInfo.query.filter_by(employee_id=current_user.id).order_by(OrderInfo.order_num).all(),employee_id=current_user.id)
 
 @app.route('/order_entry', methods=['GET', 'POST'])
 @login_required
@@ -108,11 +104,7 @@ def order_entry():
 @app.route('/payment_history', methods=['GET'])
 @login_required
 def payment_history():
-	formated_price = []
-	payments = PaymentInfo.query.all()
-	for payment in payments:
-		formated_price.append("${:,.2f}".format(payment.orderPrice))
-	return render_template('/payment_history.html', payments=payments,formated_price=formated_price,employee_id=current_user.id)
+	return render_template('/payment_history.html', payments=PaymentInfo.query.all(),employee_id=current_user.id)
 #add payment id to handle multiple users?
 @app.route('/payment:<int:order_num>', methods=['GET', 'POST'])
 def payment(order_num):
@@ -155,7 +147,7 @@ def payment(order_num):
 				sender=app.config.get("MAIL_USERNAME"),
 				recipients=[email],
 				body = body)
-			mail.send(msg)
+			#mail.send(msg)
 
 			db.session.add(info)
 			db.session.commit()
