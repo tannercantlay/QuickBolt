@@ -18,14 +18,27 @@
             {% for payment in payments %}
             <tr>
               <td>{{payment.orderNumber}}</td>
-              <td>{{payment.orderPrice}}</td>
+              <td class="currency-usd">{{payment.orderPrice}}</td>
               <td>{{payment.name}}</td>
               <td>{{payment.cardtype}}</td>
               <td>{{payment.employee_id}}</td>
             </tr>
-            {% endfor %}
+              {% endfor %}
           </tbody>
         </table>
          <a class="w3-center btn btn-warning" href="/clear_payment_history" role="button">Clear Payment History</a>
        </div>
+       
+  <script src="https://code.jquery.com/jquery-3.5.0.js"></script>
+  <script>
+      $('.currency-usd').each(function() {
+        var monetary_value = $(this).text();
+        console.log(monetary_value)
+        var i = new Intl.NumberFormat('en-US', {
+          style: 'currency',
+          currency: 'USD'
+        }).format(monetary_value);
+         $(this).text(i);
+      });
+      </script>
     {% endblock %}

@@ -65,7 +65,7 @@ def order_history():
 					order.billSent = "Sent";
 			db.session.commit()
 			return redirect(url_for('order_history'))
-	return render_template('/order_history.html', title='Order History', form=form, orders=OrderInfo.query.filter_by(employee_id=current_user.id),employee_id=current_user.id)
+	return render_template('/order_history.html', title='Order History', form=form, orders=OrderInfo.query.filter_by(employee_id=current_user.id).order_by(OrderInfo.order_num).all(),employee_id=current_user.id)
 
 @app.route('/order_entry', methods=['GET', 'POST'])
 @login_required

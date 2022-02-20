@@ -6,7 +6,7 @@ from flask_wtf.file import FileRequired
 
 class PaymentForm(FlaskForm):
 	name = StringField('First Name', validators=[DataRequired()])
-	cardtype = SelectField(u'Card Type', choices = [('c',"Credit"), ('d',"Debit")],validators = [Optional()])
+	cardtype = SelectField(u'Card Type', choices = [('Credit',"Credit"), ('Debit',"Debit")],validators = [Optional()])
 	cardnumber = StringField('Card Number',validators=[DataRequired()])
 	card_exp = StringField('Expiration Date', validators=[Regexp("\d{2}/\d{4}")])
 	address = StringField('Address', validators=[DataRequired()])
