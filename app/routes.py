@@ -62,8 +62,9 @@ def order_history():
 			flash("Email has been sent")
 			orders = OrderInfo.query.filter_by(table = form.table.data).all()
 			for order in orders:
-				order.billSent = True;
+				order.billSent = "Closed";
 			db.session.commit()
+			return redirect(url_for('order_history'))
 	return render_template('/order_history.html', title='Order History', form=form, orders=OrderInfo.query.all())
 
 @app.route('/order_entry', methods=['GET', 'POST'])
@@ -87,7 +88,7 @@ def order_entry():
 				info.order_num = maxOrderNum + 1
 			else:
 				info.order_num = tableNum.order_num
-			info.billSent = False
+			info.billSent = "Open"
 			info.employee_id = current_user.id
 		db.session.add(info)
 		db.session.commit()

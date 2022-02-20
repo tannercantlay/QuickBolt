@@ -28,7 +28,7 @@ class OrderInfo(db.Model):
 	item = db.Column(db.String(128), nullable=True)
 	price = db.Column(db.Float, nullable=True)
 	table = db.Column(db.Integer,nullable=True)
-	billSent = db.Column(db.Boolean,nullable=True)
+	billSent = db.Column(db.String(128),nullable=True)
 
 class User(UserMixin,db.Model):
 	id = db.Column(db.Integer, primary_key=True, unique=True, index=True)

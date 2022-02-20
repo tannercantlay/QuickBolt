@@ -1,5 +1,5 @@
 {% extends "navbar.html" %}
-
+{% block content %}
 <br>
 <div class="w3-container w3-center"> 
   <div class="form-group">
@@ -39,12 +39,7 @@
           <td>{{order.item}}</td>
           <td>{{order.price}}</td>
           <td>{{order.table}}</td>
-          <td>{{order.sentBill}}</td>
-          <!-- {% if order.sentBill %}
-          <td>Closed</td>
-          {% else %}
-          <td>Open</td>
-          {% endif %} -->
+          <td>{{order.billSent}}</td>
         </tr>
         {% endfor %}
       </tbody>
