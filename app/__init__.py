@@ -10,6 +10,7 @@ app = Flask(__name__)
 app.config.from_object(Config)
 db = SQLAlchemy(app)
 migrate = Migrate(app, db)
+login = LoginManager(app)
 app.config.update(dict(
     MAIL_SERVER = 'smtp.gmail.com',
     MAIL_PORT = 465,
@@ -21,4 +22,4 @@ app.config.update(dict(
 	))
 mail = Mail(app)
 
-from app import routes, forms
+from app import routes, models

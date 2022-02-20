@@ -1,80 +1,80 @@
-      {% extends "navbar.html" %}
+{% extends "navbar.html" %}
 
-      {% block content %}
-  
+{% block content %}
 
+
+<br>
+<div class="w3-container w3-center"> 
+  <div class="form-group">
+    <form action="" method="post"  enctype="multipart/form-data" validate> 
+      {{form.csrf_token }}
+      <label for="tableCharge"> Table to Charge</label>
+      {{form.table}}
+      {% for error in form.table.errors %}
+      <span style="color: red;">[{{ error }}]</span>
+      {% endfor %}
+      <label for="tableCharge"> Customer Email</label>
+      {{form.email}}
+      {% for error in form.email.errors %}
+      <span style="color: red;">[{{ error }}]</span>
+      {% endfor %}
+      <button type="submit" class="btn btn-primary">Send Bill</button>         
+    </form>
     <br>
-        <div class="w3-container w3-center"> 
-        <div class="form-group">
-          <form action="" method="post"  enctype="multipart/form-data" validate> 
-          {{form.csrf_token }}
-          <label for="tableCharge"> Table to Charge</label>
-          {{form.table}}
-          {% for error in form.table.errors %}
-          <span style="color: red;">[{{ error }}]</span>
-          {% endfor %}
-          <label for="tableCharge"> Customer Email</label>
-          {{form.email}}
-          {% for error in form.email.errors %}
-          <span style="color: red;">[{{ error }}]</span>
-          {% endfor %}
-          <button type="submit" class="btn btn-secondary">Send Bill</button>         
-          </form>
-    <br>
 
-      <body>
-      	<table class="table table-striped">
-          <thead>
-            <tr>
-              <th>Order Number</th>
-              <th>Employee Id</th>
-              <th>Menu Item</th>
-              <th>Price</th>
-              <th>Table Number</th>
-            </tr>
-          </thead>
-          <tbody>
-            {% for order in orders %}
-              <tr>
-                <td>{{order.order_num}}</td>
-                <td>{{order.employee_id}}</td>
-                <td>{{order.item}}</td>
-                <td>{{order.price}}</td>
-                <td>{{order.table}}</td>
-                </tr>
-              {% endfor %}
-            </tbody>
-          </table>
-        	
-        <footer class="w3-container w3-padding-64 w3-center w3-opacity">  
-  <div class="w3-xlarge w3-padding-32">
-    TC
-    <a href="https://github.com/tannercantlay" target="_blank"><i class="fa fa-github w3-hover-opacity"></i>
-    <a href="https://www.linkedin.com/in/tanner-cantlay-408b501a0/?trk=public_profile_browsemap_profile-result-card_result-card_full-click/" target="_blank"><i class="fa fa-linkedin w3-hover-opacity"></i>
-    </a>
-    |
-    SS
-    <a href="https://github.com/SpencerSkaggs" target="_blank"><i class="fa fa-github w3-hover-opacity"></i>
-    <a href="https://www.linkedin.com/in/spencer-skaggs-864698205/" target="_blank"><i class="fa fa-linkedin w3-hover-opacity"></i>
-    </a>
-     </div>
-  <p>Powered by <a href="https://ugahacks.com/" target="_blank">UGA Hackathon</a></p>
-</footer>
+    <body>
+     <table class="table table-striped">
+      <thead>
+        <tr>
+          <th>Order Number</th>
+          <th>Employee Id</th>
+          <th>Menu Item</th>
+          <th>Price</th>
+          <th>Table Number</th>
+          <th>Bill Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for order in orders %}
+        <tr>
+          <td>{{order.order_num}}</td>
+          <td>{{order.employee_id}}</td>
+          <td>{{order.item}}</td>
+          <td>{{order.price}}</td>
+          <td>{{order.table}}</td>
+          <td>{{order.sentBill}}</td>
+          <!-- {% if order.sentBill %}
+          <td>Closed</td>
+          {% else %}
+          <td>Open</td>
+          {% endif %} -->
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    
+    <footer class="w3-container w3-padding-64 w3-center w3-opacity">  
 
-          <script>
-        // Used to toggle the menu on small screens when clicking on the menu button
-        function myFunction() {
-        	var x = document.getElementById("navDemo");
-        	if (x.className.indexOf("w3-show") == -1) {
-        		x.className += " w3-show";
-        	} else { 
-        		x.className = x.className.replace(" w3-show", "");
-        	}
-        }
-        </script>
+      <div class="w3-xlarge w3-padding-32">
+        <a href="https://www.linkedin.com/in/spencer-skaggs-864698205/" target="_blank"><i class="fa fa-facebook-official w3-hover-opacity"></i>
+          <a href="https://www.linkedin.com/in/spencer-skaggs-864698205/" target="_blank"><i class="fa fa-instagram w3-hover-opacity"></i>
+            <a href="https://www.linkedin.com/in/spencer-skaggs-864698205/" target="_blank"><i class="fa fa-twitter w3-hover-opacity"></i>
+              <a href="https://www.linkedin.com/in/spencer-skaggs-864698205/" target="_blank"><i class="fa fa-linkedin w3-hover-opacity"></i>
+                
+              </div>
+              <p>Powered by <a href="https://ugahacks.com/" target="_blank">UGA Hackathon</a></p>
+            </footer>
 
-
-
-
-        </body>
-        {% endblock %}
+            <script>
+// Used to toggle the menu on small screens when clicking on the menu button
+function myFunction() {
+	var x = document.getElementById("navDemo");
+	if (x.className.indexOf("w3-show") == -1) {
+		x.className += " w3-show";
+	} else { 
+		x.className = x.className.replace(" w3-show", "");
+	}
+}
+</script>
+</body>
+{% endblock %}
