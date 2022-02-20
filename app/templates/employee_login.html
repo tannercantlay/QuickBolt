@@ -8,23 +8,26 @@
 			<div class="col-12 col-md-8 col-lg-6 col-xl-5">
 				<div class="card shadow-2-strong" style="border-radius: 1rem;">
 					<div class="card-body p-5 text-center">
-						<form action="" method="post" validate>
-							{{form.csrf_token }}
 							<h3 class="mb-5">Employee Login</h3>
-
-							<div class="form-outline mb-4">
-								<!-- <input type="email" id="typeEmailX-2" class="form-control form-control-lg" /> -->
-								{{form.employee_id}}<br>
-								{% for error in form.employee_id.errors %}
-								<span style="color: red;">[{{ error }}]</span>
-								{% endfor %}
-								<label class="form-label" for="typeEmailX-2">Employee Number</label>
-							</div>
-							<div class="form-outline mb-4">
-								<input type="password" id="typePasswordX-2" class="form-control form-control-lg" />
-								<label class="form-label" for="typePasswordX-2">Employee Password</label>
-							</div>
-							<button type="submit" class="btn btn-primary">Login</button>
+							<form action="" method="post" validate>
+								<div class="form-outline mb-4">
+									<!-- <input type="email" id="typeEmailX-2" class="form-control form-control-lg" /> -->
+									{{form.csrf_token }}
+									{{form.employee_id}}<br>
+									{% for error in form.employee_id.errors %}
+									<span style="color: red;">[{{ error }}]</span>
+									{% endfor %}
+									<label class="form-label" for="typeEmailX-2">Employee Number</label>
+								</div>
+								<div class="form-outline mb-4">
+									{{form.password}}<br>
+									{% for error in form.password.errors %}
+									<span style="color: red;">[{{ error }}]</span>
+									{% endfor %}
+									<label class="form-label" for="typePasswordX-2">Employee Password</label>
+								</div>
+								<button type="submit" class="btn btn-primary">Login</button>
+							</form>
 						</form>
 					</div>
 				</div>
