@@ -22,14 +22,19 @@
         <tbody>
           {% for order in orders %}
           <tr>
+            <!-- <%currency = ${:,.2f}".format({{order.price}}%> -->
             <td>{{order.item}}</td>
-            <td>{{order.price}}</td>
+          {% endfor %}
+          {% for entry in formated_price %}
+            <td>{{entry}}</td>
           </tr>
           {% endfor %}
+          
         </tbody>
       </table>
-      <h5 class="w3-padding-32">Total Price:${{price}}</h5>
-      <h5 class="w3-padding-32">Order Number:{{orders[0].order_num}}</h5>
+      <h5 class="w3-padding-10">Total Items: {{item_count}}</h5>
+      <h5 class="w3-padding-10">Total Price: {{price}}</h5>
+      <h5 class="w3-padding-10">Order Number: {{orders[0].order_num}}</h5>
     </div>
 
 

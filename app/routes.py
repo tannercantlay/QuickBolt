@@ -40,6 +40,10 @@ def login():
 @app.route('/order_history', methods=['GET', 'POST'])
 @login_required
 def order_history():
+	orders =OrderInfo.query.filter_by(employee_id=current_user.id)
+	formated_price = []
+	for order in orders:
+		formated_price.append("${:,.2f}".format(order.price))
 	form = TableToCharge()
 	if form.validate_on_submit():
 		order = OrderInfo.query.filter_by(table = form.table.data)
@@ -65,7 +69,7 @@ def order_history():
 					order.billSent = "Sent";
 			db.session.commit()
 			return redirect(url_for('order_history'))
-	return render_template('/order_history.html', title='Order History', form=form, orders=OrderInfo.query.filter_by(employee_id=current_user.id),employee_id=current_user.id)
+	return render_template('/order_history.html', title='Order History', form=form, orders=orders,formated_price=formated_price,employee_id=current_user.id)
 
 @app.route('/order_entry', methods=['GET', 'POST'])
 @login_required
@@ -104,7 +108,11 @@ def order_entry():
 @app.route('/payment_history', methods=['GET'])
 @login_required
 def payment_history():
-	return render_template('/payment_history.html', payments=PaymentInfo.query.all(),employee_id=current_user.id)
+	formated_price = []
+	payments = PaymentInfo.query.all()
+	for payment in payments:
+		formated_price.append("${:,.2f}".format(payment.orderPrice))
+	return render_template('/payment_history.html', payments=payments,formated_price=formated_price,employee_id=current_user.id)
 #add payment id to handle multiple users?
 @app.route('/payment:<int:order_num>', methods=['GET', 'POST'])
 def payment(order_num):
@@ -114,9 +122,10 @@ def payment(order_num):
 		return redirect(url_for('repay_error'))
 	else:
 		price = 0
+		formated_price = []
 		for order in orders:
 			price += order.price
-
+			formated_price.append("${:,.2f}".format(order.price))
 		form = PaymentForm()
 		if form.validate_on_submit():
 			print('is valid')
@@ -131,16 +140,16 @@ def payment(order_num):
 			email = User.query.filter_by(id = info.employee_id).first().currentCustomerEmail
 			print(email)
 			
-			body = "Thank you for your business {}, here is your reciept:\r\n Order Number: {} \r\n".format(form.name.data, order_num)
+			body = "Thank you for your business {}, here is your reciept:\r\nOrder Number: {} \r\n\r\n".format(form.name.data, order_num)
 			count = 1
 			for order in orders:
 				order.billSent = "Closed"
 
-				body += "{}. item: {} price: {}\r\n".format(count, order.item, order.price)
+				body += "{}. item: {} price: ${:,.2f}\r\n".format(count, order.item, order.price)
 				count = count + 1 
 
-			body += "\r\n Tip: {}".format(form.tip.data)
-			body += "\r\nTotal: {}".format(info.orderPrice)
+			body += "\r\nTip: ${:,.2f}".format(form.tip.data)
+			body += "\r\nTotal: ${:,.2f}".format(info.orderPrice)
 
 			msg = Message("Here is your reciept",
 				sender=app.config.get("MAIL_USERNAME"),
@@ -151,7 +160,7 @@ def payment(order_num):
 			db.session.add(info)
 			db.session.commit()
 			return redirect(url_for('payment_confirmation'))
-	return render_template('payment.html', title='payment', form=form, orders=orders, price=price)
+	return render_template('payment.html', title='payment', form=form, formated_price=formated_price, orders=orders ,item_count=len(orders), price="${:,.2f}".format(price))
 
 @app.route("/payment_confirmation", methods=['GET'])
 def payment_confirmation():

@@ -18,7 +18,11 @@
             {% for payment in payments %}
             <tr>
               <td>{{payment.orderNumber}}</td>
-              <td>{{payment.orderPrice}}</td>
+             {% endfor %}
+             {% for entry in formated_price %}
+              <td>{{entry}}</td>
+              {% endfor %}
+              {% for payment in payments %}
               <td>{{payment.name}}</td>
               <td>{{payment.cardtype}}</td>
               <td>{{payment.employee_id}}</td>
