@@ -83,17 +83,24 @@ def order_entry():
 		if len(orders)==0:
 			info.id = 0
 			info.order_num = 0
+	
 		else:
 			info.id = orders[-1].id + 1
-			tableNum = OrderInfo.query.filter_by(table = form.table.data).first()
+			tableNum = OrderInfo.query.filter_by(table = form.table.data)[-1]
+			maxOrderNum = db.session.query(func.max(OrderInfo.order_num)).scalar()
 			if tableNum is None:
-				maxOrderNum = db.session.query(func.max(OrderInfo.order_num)).scalar()
 				print(maxOrderNum)
 				info.order_num = maxOrderNum + 1
 			else:
-				info.order_num = tableNum.order_num
-			info.billSent = "Open"
-			info.employee_id = current_user.id
+				maxOrderNumForTable = OrderInfo.query.filter_by(table=form.table.data)
+				maxOrderNumForTable = OrderInfo.query.filter_by(table=form.table.data).order_by(OrderInfo.order_num)[-1]
+				if maxOrderNumForTable.billSent == "Open":
+					info.order_num = tableNum.order_num
+				else:
+					info.order_num = maxOrderNum.order_num + 1
+					
+		info.billSent = "Open"
+		info.employee_id = current_user.id
 		db.session.add(info)
 		db.session.commit()
 		flash('Order Added')
@@ -130,6 +137,7 @@ def payment(order_num):
 			body = "Thank you for your business {}, here is your reciept:\r\n Order Number: {} \r\n".format(form.name.data, order_num)
 			count = 1
 			for order in orders:
+				order.billSent = "Closed"
 
 				body += "{}. item: {} price: {}\r\n".format(count, order.item, order.price)
 				count = count + 1 
@@ -143,7 +151,6 @@ def payment(order_num):
 			mail.send(msg)
 
 			db.session.add(info)
-			OrderInfo.query.filter_by(order_num=order_num).delete()
 			db.session.commit()
 			return redirect(url_for('payment_confirmation'))
 	return render_template('payment.html', title='payment', form=form, orders=orders, price=price)
