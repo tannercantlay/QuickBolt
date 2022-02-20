@@ -114,7 +114,7 @@ def payment(order_num):
 			OrderInfo.query.filter_by(order_num=order_num).delete()
 			db.session.commit()
 			return redirect(url_for('payment_confirmation'))
-	return render_template('payment.html', title='payment', form=form, orders=orders, price=info.Orderprice)
+	return render_template('payment.html', title='payment', form=form, orders=orders, price=price)
 
 @app.route("/payment_confirmation", methods=['GET'])
 def payment_confirmation():
