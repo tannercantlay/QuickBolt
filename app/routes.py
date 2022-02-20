@@ -147,7 +147,7 @@ def payment(order_num):
 				sender=app.config.get("MAIL_USERNAME"),
 				recipients=[email],
 				body = body)
-			#mail.send(msg)
+			mail.send(msg)
 
 			db.session.add(info)
 			db.session.commit()
