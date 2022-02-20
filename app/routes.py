@@ -75,7 +75,6 @@ def order_entry():
 		
 		info = OrderInfo(table=form.table.data,item=form.item.data, price=form.price.data)
 		orders = OrderInfo.query.all()
-		
 		if len(orders)==0:
 			info.id = 0
 			info.order_num = 0
@@ -87,7 +86,6 @@ def order_entry():
 			# tableNum = tableQuery.first()
 			maxOrderNumForTable = OrderInfo.query.filter_by(table=form.table.data).order_by(desc(OrderInfo.order_num)).first()
 			if maxOrderNumForTable is not None:
-
 				if maxOrderNumForTable.billSent == "Open":
 					info.order_num = maxOrderNumForTable.order_num
 				else:
