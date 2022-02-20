@@ -48,10 +48,14 @@ def login():
 def order_history():
 	form = TableToCharge()
 	if form.validate_on_submit():
-		order_num = OrderInfo.query.filter_by(table = form.table.data).first()
+		order = OrderInfo.query.filter_by(table = form.table.data)
+		order_num = order.first()
 		if order_num is None:
 			flash("Invalid Table")
 		else:
+			if order_num.billSent == "Sent" or order_num.billSent =="Closed":
+				flash("Bill has already been sent")
+				return redirect(url_for('order_history'))
 			current_user.currentCustomerEmail = form.email.data
 			body = "Please click this link to pay your bill: 127.0.0.1:5000/payment:{}".format(int(order_num.order_num))
 			msg = Message("Here is your bill",
@@ -62,10 +66,10 @@ def order_history():
 			flash("Email has been sent")
 			orders = OrderInfo.query.filter_by(table = form.table.data).all()
 			for order in orders:
-				order.billSent = "Closed";
+				order.billSent = "Sent";
 			db.session.commit()
 			return redirect(url_for('order_history'))
-	return render_template('/order_history.html', title='Order History', form=form, orders=OrderInfo.query.all())
+	return render_template('/order_history.html', title='Order History', form=form, orders=OrderInfo.query.all(),employee_id=current_user.id)
 
 @app.route('/order_entry', methods=['GET', 'POST'])
 @login_required
@@ -94,12 +98,12 @@ def order_entry():
 		db.session.commit()
 		flash('Order Added')
 		return redirect(url_for('order_entry'))
-	return render_template('/order_entry.html', title='Order Entry', form=form)
+	return render_template('/order_entry.html', title='Order Entry', form=form, employee_id=current_user.id)
 
 @app.route('/payment_history', methods=['GET'])
 @login_required
 def payment_history():
-	return render_template('/payment_history.html', payments=PaymentInfo.query.all())
+	return render_template('/payment_history.html', payments=PaymentInfo.query.all(),employee_id=current_user.id)
 #add payment id to handle multiple users?
 @app.route('/payment:<int:order_num>', methods=['GET', 'POST'])
 def payment(order_num):
@@ -120,8 +124,8 @@ def payment(order_num):
 				address=form.address.data, city=form.city.data, state=form.state.data, 
 				zip_code=form.zip_code.data)
 			info.orderPrice = price + form.tip.data
-			info.employee_id = order[0].employee_id
-			email = Users.query.filter_by(id = info.employee_id).currentCustomerEmail
+			info.employee_id = orders[0].employee_id
+			email = User.query.filter_by(id = info.employee_id).first().currentCustomerEmail
 			
 			body = "Thank you for your business {}, here is your reciept:\r\n Order Number: {} \r\n".format(form.name.data, order_num)
 			count = 1
@@ -157,3 +161,16 @@ def logout():
 	flash('Successfully logged out user {}'.format(current_user.id))
 	logout_user()
 	return redirect('login')
+
+@app.route("/clear_order_history")
+def clearOrders():
+	OrderInfo.query.delete()
+	db.session.commit()
+	return redirect('order_history')
+
+@app.route("/clear_payment_history")
+def clearPayments():
+	PaymentInfo.query.delete()
+	db.session.commit()
+	return redirect('payment_history')
+

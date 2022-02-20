@@ -15,7 +15,7 @@
       {% for error in form.email.errors %}
       <span style="color: red;">[{{ error }}]</span>
       {% endfor %}
-      <button type="submit" class="btn btn-primary">Send Bill</button>         
+      <button type="submit" class="btn btn-secondary">Send Bill</button>         
     </form>
     <br>
 
@@ -44,6 +44,7 @@
         {% endfor %}
       </tbody>
     </table>
+    <a class="btn btn-warning" href="/clear_order_history" role="button">Clear Order History</a>
     
     <footer class="w3-container w3-padding-64 w3-center w3-opacity">  
 

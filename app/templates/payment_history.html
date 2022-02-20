@@ -10,7 +10,6 @@
               <th>Order Price</th>
               <th>Customer Name</th>
               <th>Card Type</th>
-              <th>Zip Code</th>
               <th>Server Id</th>
             </tr>
           </thead>
@@ -20,14 +19,14 @@
               <td>{{payment.orderNumber}}</td>
               <td>{{payment.orderPrice}}</td>
               <td>{{payment.name}}</td>
-              <td>{{payment.zip_code}}</td>
               <td>{{payment.employee_id}}</td>
             </tr>
             {% endfor %}
           </tbody>
         </table>
-        
-        <footer class="w3-container w3-padding-64 w3-center w3-opacity">  
+    
+        <footer class="w3-container w3-padding-64 w3-center w3-opacity">
+          <a class="btn btn-warning" href="/clear_payment_history" role="button">Clear Payment History</a>
           <div class="w3-xlarge w3-padding-32">
             TC
             <a href="https://github.com/tannercantlay" target="_blank"><i class="fa fa-github w3-hover-opacity"></i>
