@@ -94,10 +94,11 @@ def order_entry():
 			else:
 				maxOrderNumForTable = OrderInfo.query.filter_by(table=form.table.data)
 				maxOrderNumForTable = OrderInfo.query.filter_by(table=form.table.data).order_by(OrderInfo.order_num)[-1]
+				print(maxOrderNumForTable)
 				if maxOrderNumForTable.billSent == "Open":
 					info.order_num = tableNum.order_num
 				else:
-					info.order_num = maxOrderNum.order_num + 1
+					info.order_num = maxOrderNumForTable.order_num + 1
 					
 		info.billSent = "Open"
 		info.employee_id = current_user.id
