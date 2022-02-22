@@ -20,7 +20,7 @@ import bitpay
 # # from src.bitpay.models.invoice.buyer import Buyer
 # # from src.bitpay.models.payout.payout import Payout
 # from src.bitpay.models.invoice.invoice import Invoice
-URL = "http://127.0.0.1:5000/"
+URL = "http://192.168.1.106:5000/"
 
 @app.route('/',methods=['GET', 'POST'])
 @app.route('/login',methods=['GET', 'POST'])
