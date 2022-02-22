@@ -5,6 +5,8 @@ from flask_migrate import Migrate
 from flask_login import LoginManager
 from flask_mail import Mail
 from werkzeug.utils import secure_filename
+import bitpay
+from bitpay.client import Client
 
 app = Flask(__name__)
 app.config.from_object(Config)
@@ -22,4 +24,6 @@ app.config.update(dict(
     ENVIRONMENT = 'development'
     ))
 mail = Mail(app)
-from app import routes, models
+
+client = Client('https://test.bitpay.com') #bitpay.config.json
+from app import routes, models,key_utils

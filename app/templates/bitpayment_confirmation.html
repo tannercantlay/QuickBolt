@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<body>
+	<!-- payment-confirmation -->
+	<div class="container py-5 h-100">
+		<div class="row d-flex justify-content-center align-items-center h-100">
+			<p> Payment Confirmed </p>
+			<br>
+		</div>
+		<div class="row d-flex justify-content-center align-items-center h-100">
+			<p> Thank you for using our service </p>
+		</div>
+	</div>
+</div>
+</div>
+</div>
+<script>window.addEventListener("message", function (event) {
+              payment_status = event.data.status;
+              if (payment_status == "paid") {
+                is_paid = true;
+                console.log("paid");
+              
+                return;
+              }  
+            //show the order info
+              bitpay.onModalWillLeave(function () {
+                if (is_paid == false) {
+                  console.log("not paid");
+                } //endif
+              });
+            });
+            console.log("running");
+            bitpay.enableTestMode();
+            bitpay.showInvoice(data);
+        </script>
+{% endblock %}

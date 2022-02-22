@@ -2,6 +2,7 @@
 
 {% block content %}
 <!-- RECEIPT INFORMATION -->
+<script src="https://bitpay.com/bitpay.min.js"></script>
 <div class="w3-row-padding w3-padding-64 w3-container">
   <div class="w3-content">
     <div class="w3-twothird">
@@ -28,7 +29,7 @@
           {% endfor %}
         </tbody>
       </table>
-      <h5 class="w3-padding-32">Total Price:${{price}}</h5>
+      <h5 class="w3-padding-32 currency-usd">Total Price: {{price}}</h5>
       <h5 class="w3-padding-32">Order Number:{{orders[0].order_num}}</h5>
     </div>
 
@@ -37,7 +38,7 @@
     
     <h1>Payment Information</h1>
     <p class="w3-text-grey">Please input card details below</p>
-    <form action="" method="post"  enctype="multipart/form-data" novalidate> 
+    <form action="" method="post"  enctype="multipart/form-data" id='form' novalidate> 
 
       {{form.csrf_token }}
       <div class="form-row">
@@ -137,23 +138,79 @@
 
     <div>
       <br>
-      <button type="submit" class="btn btn-secondary">Checkout</button>
-    </form>    
+      <button type="submit" class="btn btn-secondary" name="submit1" form='form'>Checkout</button><br>
+    </form>
+    <form action="" method="post" class="bitpayButton" enctype="multipart/form-data" id='bitpayform' novalidate> 
+    {{bitpayform.csrf_token }} 
+    <button type="submit" class="btn" name="submit2" value="bitpay" form='bitpayform' >
+    <img src="https://bitpay.com/cdn/merchant-resources/pay-with-bitpay-card-group.svg" alt="BitPay Supported Currencies" width="250px" />
+    </button>
+  </form>
+
+  <form action="https://test.bitpay.com/checkout" method="post">
+  <input type="hidden" name="action" value="checkout" />
+  <input type="hidden" name="posData" value="" />
+  <input name="price" type="hidden" value={{price}}>
+  <input type="hidden" name="notificationType" value="json" />
+  <input type="hidden" name="data" value="zRhDGD7644Fl2b2keZodbLmN5V2B7MjrDhZkz1WT4yi+4t3HEec95h5M5Cd7WgUK2PF8RGtnzO5+FXVkr9Qfv7AREuGaeLs0zBIl6RiN+BmUjbg0pqJ1JkqNNl6QCiLRxwnntf+q6P391zS1tpfTGKpWH+IY7TxVV4aySqwVReVb3+UccYgv0a6+ksi4YlFN5FirYQiF42rVWmN8rq+LuAISsEZH7UsRc/lqlWX1iAc=" />
+  <input type="image" src="https://test.bitpay.com/cdn/en_US/bp-btn-pay-currencies.svg" name="submit" style="width: 168px" alt="BitPay, the easy way to pay with bitcoins.">
+</form>
   </div>
 </div>
 </form>
 </div>
-
   <script src="https://code.jquery.com/jquery-3.5.0.js"></script>
   <script>
       $('.currency-usd').each(function() {
         var monetary_value = $(this).text();
-        console.log(monetary_value)
+        console.log(monetary_value);
         var i = new Intl.NumberFormat('en-US', {
           style: 'currency',
           currency: 'USD'
         }).format(monetary_value);
          $(this).text(i);
       });
-      </script>
+
+      $('.bitpayButton').submit(function(event){
+        // var formData = {=
+        //   name: $("bitpayPicked").val();
+        // }
+        event.preventDefault();
+        console.log("clicked payment");
+        $.ajax({
+          type: "post",
+          url: window.location.href,
+          success: function(result){
+            console.log(result);
+            var is_paid = false;
+            window.addEventListener("message", function (event) {
+              payment_status = event.data.status;
+              if (payment_status == "paid") {
+                is_paid = true;
+                console.log("paid");
+                window.location = "{{url}}/bitpayment:{{orders[0].order_num}}"
+              }  
+            //show the order info
+              bitpay.onModalWillLeave(function () {
+                if (is_paid == false) {
+                  console.log("not paid");
+                }
+                //endif
+              });
+            });
+            console.log("running");
+            bitpay.enableTestMode();
+            console.log(result);
+            bitpay.showInvoice(result);
+          }
+        });
+      });
+
+   //      window.onload = function() {
+   //        if('{{invoice_id}}' != 0)
+   //          console.log("running");{}
+   //          bitpay.enableTestMode();
+   //          bitpay.showInvoice('{{invoice_id}}');
+   // };
+ </script>
 {% endblock %}

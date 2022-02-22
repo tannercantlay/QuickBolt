@@ -6,7 +6,7 @@ from flask_wtf.file import FileRequired
 
 class PaymentForm(FlaskForm):
 	name = StringField('First Name', validators=[DataRequired()])
-	cardtype = SelectField(u'Card Type', choices = [('Credit',"Credit"), ('Debit',"Debit")],validators = [Optional()])
+	cardtype = SelectField(u'Card Type', choices = [('Credit',"Credit"), ('Debit',"Debit"), ('Bitcoin','Bitcoin')],validators = [Optional()])
 	cardnumber = StringField('Card Number',validators=[DataRequired()])
 	card_exp = StringField('Expiration Date', validators=[Regexp("\d{2}/\d{4}")])
 	address = StringField('Address', validators=[DataRequired()])
@@ -15,7 +15,7 @@ class PaymentForm(FlaskForm):
 	state = StringField('State', validators=[DataRequired()])
 	zip_code = StringField('Zip', validators=[DataRequired()])
 	tip = FloatField('Tip', validators=[Optional()])
-	submit = SubmitField('Place Payment')
+	submit1 = SubmitField('Place Payment')
 
 	def validate_card_num(self, card_num):
 		if not len(str(card_num.data))==16:
@@ -42,3 +42,5 @@ class TableToCharge(FlaskForm):
 	email = StringField('Email', validators=[DataRequired(),Email()])
 	submit = SubmitField('Send Bill')
 
+class BitPayForm(FlaskForm):
+	submit2 = SubmitField('bitpay', validators=[DataRequired()])
