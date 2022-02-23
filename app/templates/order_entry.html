@@ -7,24 +7,44 @@
 <body>
 	<form action="" method="post" enctype="multipart/form-data" validate> 
 		{{form.csrf_token }}
-		<label class="form-label" for="typeEmailX-2">Table Number: </label>
-		{{form.table}}<br>
-		{% for error in form.table.errors %}
-		<span style="color: red;">[{{ error }}]</span>
-		{% endfor %}
-		<label class="form-label" for="typeEmailX-2">Menu Item:</label>
-		{{form.item}}<br>
-		{% for error in form.item.errors %}
-		<span style="color: red;">[{{ error }}]</span>
-		{% endfor %}
-	<label class="form-label" for="typeEmailX-2">Item Price:</label>
-		{{form.price}}<br>
-		{% for error in form.price.errors %}
-		<span style="color: red;">[{{ error }}]</span>
-		{% endfor %}
+		<div class="w3-container w3-center"> 
+		<table class="table table-striped">
+          <thead>
+            <tr>
+              <th>Table Number</th>
+              <th>Menu Item</th>
+              <th>Price</th>
+            </tr>
+          </thead>
+          <tbody class="order_table">
+            <tr>
+              <td>{{form.table}}</td>
+     			{% for error in form.table.errors %}
+				<span style="color: red;">[{{ error }}]</span>
+				{% endfor %}
+              <td>{{form.item}}</td>
+              {% for error in form.item.errors %}
+				<span style="color: red;">[{{ error }}]</span>
+				{% endfor %}
+              <td> {{form.price}}</td>
+  				{% for error in form.price.errors %}
+				<span style="color: red;">[{{ error }}]</span>
+				{% endfor %}
+            </tr>
+          </tbody>
+        </table>
 
-		<button type="submit" class="btn btn-secondary">Add Order</button>
+		<button type="submit" class="btn btn-secondary">Submit Order</button>
 	</form>
-  </body>
+	<input id="addbutton" class="btn btn-seconday addbutton" type="button" value="Add Order Item" />
+         <script src="https://code.jquery.com/jquery-3.5.0.js"></script>
+        <script>
+        	//append not working but base script i think?
+        	$.('.addbutton').click(function(){
+	        	$.('.order_table').append('<tr><td>{{form.table}}</td><td>{{form.item}}</td><td> {{form.price}}</td></tr>'
+	            );
+	            console.log("Clicked")
+	        });
+   		</script>
 </div>
 {% endblock %}

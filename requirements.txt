@@ -4,3 +4,5 @@ flask-sqlalchemy
 flask-migrate
 flask-mail
 flask-login
+bitpay
+python-dotenv
