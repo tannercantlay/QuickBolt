@@ -8,16 +8,17 @@
 	<form action="" method="post" enctype="multipart/form-data" validate> 
 		{{form.csrf_token }}
 		<div class="w3-container w3-center"> 
-		<table class="table table-striped">
+		<table class="table table-striped" id="tbl">
           <thead>
             <tr>
               <th>Table Number</th>
               <th>Menu Item</th>
               <th>Price</th>
+              <th></th>
             </tr>
           </thead>
-          <tbody class="order_table">
-            <tr>
+          <tbody id="order_table">
+            <tr id ="row 0">
               <td>{{form.table}}</td>
      			{% for error in form.table.errors %}
 				<span style="color: red;">[{{ error }}]</span>
@@ -30,21 +31,28 @@
   				{% for error in form.price.errors %}
 				<span style="color: red;">[{{ error }}]</span>
 				{% endfor %}
-            </tr>
+            <td><button id="removebtn" class="btn btn-secondary" onclick="RemoveRow(' 0')">Remove Item</button></td>
+          </tr>
           </tbody>
         </table>
 
 		<button type="submit" class="btn btn-secondary">Submit Order</button>
 	</form>
-	<input id="addbutton" class="btn btn-seconday addbutton" type="button" value="Add Order Item" />
-         <script src="https://code.jquery.com/jquery-3.5.0.js"></script>
+	<input id="addbutton" class="btn btn-seconday" type="button" onclick="AddRow()"value="Add Order Item" />
+</div>
+<script src="https://code.jquery.com/jquery-3.5.0.js"></script>
         <script>
         	//append not working but base script i think?
-        	$('.addbutton').click(function(){
-	        	$.('.order_table').append('<tr><td>{{form.table}}</td><td>{{form.item}}</td><td> {{form.price}}</td></tr>'
-	            );
+        	function AddRow(){
+        		var table = document.getElementById("tbl"); //get the table      
+    				var rowcount = table.rows.length;
+    				var tblRow = '<tr id="row '+ rowcount + '"><td>{{form.table}}</td><td>{{form.item}}</td><td>{{form.price}}</td><td><button id="removebtn" class="btn btn-secondary" onclick="RemoveRow("'+rowcount+'")">Remove Item</button></td></tr>'
+	        	$('#order_table').append(tblRow);
 	            console.log("Clicked")
-	        });
+	        };
+	        function RemoveRow(id){
+	        	print(id);
+	        	$("#row " + id).remove();
+	        };
    		</script>
-</div>
 {% endblock %}
