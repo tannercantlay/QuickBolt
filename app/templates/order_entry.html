@@ -18,20 +18,20 @@
             </tr>
           </thead>
           <tbody id="order_table">
-            <tr id ="row 0">
-              <td>{{form.table}}</td>
-     			{% for error in form.table.errors %}
+            <tr id ="row0">
+              <td>{{form.items.table}}</td>
+     			{% for error in form.items.table.errors %}
 				<span style="color: red;">[{{ error }}]</span>
 				{% endfor %}
-              <td>{{form.item}}</td>
-              {% for error in form.item.errors %}
+              <td>{{form.items.item}}</td>
+              {% for error in form.items.item.errors %}
 				<span style="color: red;">[{{ error }}]</span>
 				{% endfor %}
-              <td> {{form.price}}</td>
-  				{% for error in form.price.errors %}
+              <td> {{form.items.price}}</td>
+  				{% for error in form.items.price.errors %}
 				<span style="color: red;">[{{ error }}]</span>
 				{% endfor %}
-            <td><button id="removebtn" class="btn btn-secondary" onclick="RemoveRow(' 0')">Remove Item</button></td>
+            <td><button id="removebtn" class="btn btn-secondary" onclick="RemoveRow('0')">Remove Item</button></td>
           </tr>
           </tbody>
         </table>
@@ -46,13 +46,14 @@
         	function AddRow(){
         		var table = document.getElementById("tbl"); //get the table      
     				var rowcount = table.rows.length;
-    				var tblRow = '<tr id="row '+ rowcount + '"><td>{{form.table}}</td><td>{{form.item}}</td><td>{{form.price}}</td><td><button id="removebtn" class="btn btn-secondary" onclick="RemoveRow("'+rowcount+'")">Remove Item</button></td></tr>'
+    				var tblRow = '<tr id="row'+ rowcount + '"><td>{{form.items.table}}</td><td>{{form.items.item}}</td><td>{{form.items.price}}</td><td><button id="removebtn" class="btn btn-secondary" onclick="RemoveRow('+ rowcount + ')">Remove Item</button></td></tr>'
 	        	$('#order_table').append(tblRow);
 	            console.log("Clicked")
 	        };
 	        function RemoveRow(id){
-	        	print(id);
-	        	$("#row " + id).remove();
+	        	var removeId = "#row" + id;
+	        	console.log(removeId);
+	        	$(removeId).remove();
 	        };
    		</script>
 {% endblock %}
