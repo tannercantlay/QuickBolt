@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, BooleanField, SubmitField, IntegerField, SelectField, FloatField
+from wtforms import StringField, PasswordField, BooleanField, SubmitField, IntegerField, SelectField, FloatField, FormField, FieldList
 from wtforms.validators import ValidationError, DataRequired, Email, EqualTo, AnyOf, Regexp, Optional
 from app.models import PaymentInfo, OrderInfo, User
 from flask_wtf.file import FileRequired
@@ -44,3 +44,6 @@ class TableToCharge(FlaskForm):
 
 class BitPayForm(FlaskForm):
 	submit2 = SubmitField('bitpay', validators=[DataRequired()])
+
+class TotalOrderEntryForm(FlaskForm):
+	items = FieldList(FormField(OrderEntryForm), min_entries=1, max_entries=25)

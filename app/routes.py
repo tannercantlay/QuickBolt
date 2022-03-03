@@ -78,36 +78,38 @@ def order_history():
 @app.route('/order_entry', methods=['GET', 'POST'])
 @login_required
 def order_entry():
-	form = OrderEntryForm()
+	form = TotalOrderEntryForm()
+	subform = OrderEntryForm()
 	if form.validate_on_submit():
+		for item in form.items.data:
+
+			info = OrderInfo(table=item.table.data,item=item.item.data, price=item.price.data)
+			orders = OrderInfo.query.all()
+			if len(orders)==0:
+				info.id = 0
+				info.order_num = 0
 		
-		info = OrderInfo(table=form.table.data,item=form.item.data, price=form.price.data)
-		orders = OrderInfo.query.all()
-		if len(orders)==0:
-			info.id = 0
-			info.order_num = 0
-	
-		else:
-			info.id = orders[-1].id + 1
-			# tableQuery = OrderInfo.query.filter_by(table = form.table.data).order_by(desc(OrderInfo.order_num))
-			maxOrderNum = db.session.query(func.max(OrderInfo.order_num)).scalar()
-			# tableNum = tableQuery.first()
-			maxOrderNumForTable = OrderInfo.query.filter_by(table=form.table.data).order_by(desc(OrderInfo.order_num)).first()
-			if maxOrderNumForTable is not None:
-				if maxOrderNumForTable.billSent == "Open":
-					info.order_num = maxOrderNumForTable.order_num
+			else:
+				info.id = orders[-1].id + 1
+				# tableQuery = OrderInfo.query.filter_by(table = item.table.data).order_by(desc(OrderInfo.order_num))
+				maxOrderNum = db.session.query(func.max(OrderInfo.order_num)).scalar()
+				# tableNum = tableQuery.first()
+				maxOrderNumForTable = OrderInfo.query.filter_by(table=item.table.data).order_by(desc(OrderInfo.order_num)).first()
+				if maxOrderNumForTable is not None:
+					if maxOrderNumForTable.billSent == "Open":
+						info.order_num = maxOrderNumForTable.order_num
+					else:
+						info.order_num = maxOrderNum + 1
 				else:
 					info.order_num = maxOrderNum + 1
-			else:
-				info.order_num = maxOrderNum + 1
 
-		info.billSent = "Open"
-		info.employee_id = current_user.id
-		db.session.add(info)
+			info.billSent = "Open"
+			info.employee_id = current_user.id
+			db.session.add(info)
 		db.session.commit()
 		flash('Order Added')
 		return redirect(url_for('order_entry'))
-	return render_template('/order_entry.html', title='Order Entry', form=form, employee_id=current_user.id)
+	return render_template('/order_entry.html', title='Order Entry', form=form,subform=subform, employee_id=current_user.id)
 
 @app.route('/payment_history', methods=['GET'])
 @login_required
