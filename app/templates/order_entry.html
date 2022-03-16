@@ -5,8 +5,6 @@
 <br>
 <div class="w3-container w3-center">
 <body>
-	<form action="" method="post" enctype="multipart/form-data" validate> 
-		{{form.csrf_token }}
 		<div class="w3-container w3-center"> 
 		<table class="table table-striped" id="tbl">
           <thead>
@@ -19,24 +17,27 @@
           </thead>
           <tbody id="order_table">
             <tr id ="row0">
-              <td>{{form.items.table}}</td>
-     			{% for error in form.items.table.errors %}
+            	<form action="" method="post" enctype="multipart/form-data" id="form0"validate> 
+						{{form.csrf_token }}
+              <td>{{form.table}}</td>
+     			{% for error in form.table.errors %}
 				<span style="color: red;">[{{ error }}]</span>
 				{% endfor %}
-              <td>{{form.items.item}}</td>
-              {% for error in form.items.item.errors %}
+              <td>{{form.item}}</td>
+              {% for error in form.item.errors %}
 				<span style="color: red;">[{{ error }}]</span>
 				{% endfor %}
-              <td> {{form.items.price}}</td>
-  				{% for error in form.items.price.errors %}
+              <td> {{form.price}}</td>
+  				{% for error in form.price.errors %}
 				<span style="color: red;">[{{ error }}]</span>
 				{% endfor %}
             <td><button id="removebtn" class="btn btn-secondary" onclick="RemoveRow('0')">Remove Item</button></td>
+             </form>
           </tr>
           </tbody>
         </table>
 
-		<button type="submit" class="btn btn-secondary">Submit Order</button>
+		<button type="submit" class="btn btn-secondary" onclick="SubmitTable()">Submit Order</button>
 	</form>
 	<input id="addbutton" class="btn btn-seconday" type="button" onclick="AddRow()"value="Add Order Item" />
 </div>
@@ -46,7 +47,7 @@
         	function AddRow(){
         		var table = document.getElementById("tbl"); //get the table      
     				var rowcount = table.rows.length;
-    				var tblRow = '<tr id="row'+ rowcount + '"><td>{{form.items.table}}</td><td>{{form.items.item}}</td><td>{{form.items.price}}</td><td><button id="removebtn" class="btn btn-secondary" onclick="RemoveRow('+ rowcount + ')">Remove Item</button></td></tr>'
+    				var tblRow = '<tr id="row'+ rowcount + '"><form action="" method="post" enctype="multipart/form-data" id="form' + rowcount +'" validate> 						{{form.csrf_token }}<td>{{form.table}}</td><td>{{form.item}}</td><td>{{form.price}}</td><td><button id="removebtn" class="btn btn-secondary" onclick="RemoveRow('+ rowcount + ')">Remove Item</button></td></form></tr>'
 	        	$('#order_table').append(tblRow);
 	            console.log("Clicked")
 	        };
@@ -55,5 +56,17 @@
 	        	console.log(removeId);
 	        	$(removeId).remove();
 	        };
+	        //TODO:
+	        //how to submit each row as a single form or as all individual
+	        //for each row in table, form submit? and then just change the routing to inside the jquery
+	        function SubmitTable(){
+	        	var table = document.getElementById('tbl');//gets the table
+	         	var tbl_length = table.rows.length;
+	         	for(let i =0; i < tbl_length; i++){
+	         		  var formId = "#form" + i;
+	        			console.log(formId);
+	         			$(formId).submit();
+	         	}
+	         };
    		</script>
 {% endblock %}
